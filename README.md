@@ -1,11 +1,11 @@
-# saas-toolkit
+# ncode-saas-toolkit
 
 Base Claude Code plugin for SaaS development. Part of the nCode course by Daniel Goldman.
 
 ## Install
 
 ```bash
-claude plugin add dangogit/saas-toolkit
+claude plugin add dangogit/ncode-saas-toolkit
 ```
 
 ## What's Included
@@ -44,5 +44,5 @@ claude plugin add context7
 
 ## Extensions
 
-- `dangogit/saas-toolkit-web` - Web development track
-- `dangogit/saas-toolkit-mobile` - Mobile development track
+- `dangogit/ncode-saas-toolkit-web` - Web development track
+- `dangogit/ncode-saas-toolkit-mobile` - Mobile development track

@@ -1,12 +1,12 @@
-# saas-toolkit
+# ncode-saas-toolkit
 
 Base toolkit for SaaS development with Claude Code. Part of the nCode course ecosystem.
 
 ## Plugin Architecture
 
 This is the base plugin. Students also install one track extension:
-- `saas-toolkit-web` - Next.js + Supabase + Vercel + AI SDK + Gemini
-- `saas-toolkit-mobile` - React Native + Expo + Firebase + Gemini
+- `ncode-saas-toolkit-web` - Next.js + Supabase + Vercel + AI SDK + Gemini
+- `ncode-saas-toolkit-mobile` - React Native + Expo + Firebase + Gemini
 
 ## Conventions
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# nCode saas-toolkit Base Installer
-# https://github.com/dangogit/saas-toolkit
+# nCode ncode-saas-toolkit Base Installer
+# https://github.com/dangogit/ncode-saas-toolkit
 #
 # Installs the base plugin + essential plugins and skills for all nCode students.
 # Run the main Claude Code installer first: danielthegoldman.com/claude-code-installer
@@ -38,12 +38,12 @@ fi
 # -----------------------------------------
 echo ""
 echo -e "${BOLD}${CYAN}+================================================+${RESET}"
-echo -e "${BOLD}${CYAN}|     nCode saas-toolkit - Base Installer         |${RESET}"
+echo -e "${BOLD}${CYAN}|     nCode ncode-saas-toolkit - Base Installer         |${RESET}"
 echo -e "${BOLD}${CYAN}|  Skills, agents & plugins for SaaS development  |${RESET}"
 echo -e "${BOLD}${CYAN}+================================================+${RESET}"
 echo ""
 echo -e "  This installer will set up:"
-echo -e "  ${GREEN}+${RESET} saas-toolkit plugin (5 skills + 4 agents)"
+echo -e "  ${GREEN}+${RESET} ncode-saas-toolkit plugin (5 skills + 4 agents)"
 echo -e "  ${GREEN}+${RESET} Superpowers plugin (brainstorming, planning, TDD, debugging)"
 echo -e "  ${GREEN}+${RESET} Context7 plugin (library docs lookup)"
 echo -e "  ${GREEN}+${RESET} TypeScript LSP plugin (TypeScript intelligence)"
@@ -52,13 +52,13 @@ echo ""
 read -r -p "  Press Enter to continue, or Ctrl+C to cancel... "
 
 # -----------------------------------------
-# 1. saas-toolkit plugin
+# 1. ncode-saas-toolkit plugin
 # -----------------------------------------
-print_step "Installing saas-toolkit plugin"
-print_installing "dangogit/saas-toolkit"
-claude plugin add dangogit/saas-toolkit 2>/dev/null && \
-  print_done "saas-toolkit installed" || \
-  print_done "saas-toolkit already installed"
+print_step "Installing ncode-saas-toolkit plugin"
+print_installing "dangogit/ncode-saas-toolkit"
+claude plugin add dangogit/ncode-saas-toolkit 2>/dev/null && \
+  print_done "ncode-saas-toolkit installed" || \
+  print_done "ncode-saas-toolkit already installed"
 
 # -----------------------------------------
 # 2. Superpowers plugin
@@ -105,10 +105,10 @@ echo -e "${BOLD}${GREEN}|        Base toolkit ready!                      |${RES
 echo -e "${BOLD}${GREEN}+================================================+${RESET}"
 echo ""
 echo -e "  ${BOLD}What was installed:${RESET}"
-echo -e "  saas-toolkit (5 skills + 4 agents)"
+echo -e "  ncode-saas-toolkit (5 skills + 4 agents)"
 echo -e "  superpowers, context7, typescript-lsp, frontend-design"
 echo ""
 echo -e "  ${BOLD}Next: Install your track${RESET}"
-echo -e "  ${CYAN}Web:${RESET}    curl -fsSL https://danielthegoldman.com/saas-toolkit-web/install.sh | bash"
-echo -e "  ${CYAN}Mobile:${RESET} curl -fsSL https://danielthegoldman.com/saas-toolkit-mobile/install.sh | bash"
+echo -e "  ${CYAN}Web:${RESET}    curl -fsSL https://danielthegoldman.com/ncode-saas-toolkit-web/install.sh | bash"
+echo -e "  ${CYAN}Mobile:${RESET} curl -fsSL https://danielthegoldman.com/ncode-saas-toolkit-mobile/install.sh | bash"
 echo ""

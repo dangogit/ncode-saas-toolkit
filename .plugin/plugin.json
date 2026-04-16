@@ -1,12 +1,12 @@
 {
-  "name": "saas-toolkit",
+  "name": "ncode-saas-toolkit",
   "version": "3.0.0",
   "description": "Base toolkit for building SaaS products with Claude Code. Shared foundation for web and mobile tracks. Part of the nCode course ecosystem.",
   "author": {
     "name": "Daniel Goldman",
     "url": "https://danielthegoldman.com"
   },
-  "repository": "https://github.com/dangogit/saas-toolkit",
+  "repository": "https://github.com/dangogit/ncode-saas-toolkit",
   "license": "MIT",
   "keywords": [
     "saas",
