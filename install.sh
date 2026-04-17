@@ -49,7 +49,6 @@ echo -e "  ${GREEN}+${RESET} Context7 plugin (library docs lookup)"
 echo -e "  ${GREEN}+${RESET} TypeScript LSP plugin (TypeScript intelligence)"
 echo -e "  ${GREEN}+${RESET} Frontend Design plugin (production-grade UI)"
 echo ""
-read -r -p "  Press Enter to continue, or Ctrl+C to cancel... "
 
 # -----------------------------------------
 # 1. ncode-saas-toolkit plugin
