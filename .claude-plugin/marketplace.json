@@ -5,25 +5,17 @@
     "url": "https://danielthegoldman.com"
   },
   "metadata": {
-    "description": "nCode course base toolkit - skills and agents for building SaaS with Claude Code",
-    "version": "4.0.0"
+    "description": "nCode course base toolkit - 7 skills and 4 agents for building SaaS with Claude Code",
+    "version": "5.0.0"
   },
   "plugins": [
     {
       "name": "ncode-saas-toolkit",
       "source": "./plugins/ncode-saas-toolkit",
-      "description": "Base SaaS toolkit: 5 skills + 4 agents for non-technical founders building SaaS products",
-      "version": "4.0.0",
+      "description": "Base SaaS toolkit: 7 skills + 4 agents for non-technical founders. Project setup, anti-vibe-coding polish, RLS guard, shipping checklist, webhook patterns, prompt guide, PRD methodology.",
+      "version": "5.0.0",
       "category": "development",
-      "tags": [
-        "saas",
-        "ncode",
-        "vibe-coding",
-        "supabase",
-        "vercel",
-        "claude-code",
-        "hebrew"
-      ]
+      "tags": ["saas", "ncode", "vibe-coding", "supabase", "vercel", "claude-code", "hebrew"]
     }
   ]
 }

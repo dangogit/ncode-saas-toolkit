@@ -86,6 +86,27 @@ claude plugin install frontend-design 2>/dev/null && \
   print_done "frontend-design already installed"
 
 # -----------------------------------------
+# 6. Additional marketplace skills
+# -----------------------------------------
+print_step "Installing additional skills from marketplace"
+
+print_installing "Supabase Official Skills (DB, Auth, RLS, Edge Functions)"
+npx skills add supabase/agent-skills -g -y 2>/dev/null
+print_done "supabase-agent-skills"
+
+print_installing "React + Next.js Best Practices (Vercel Official)"
+npx skills add vercel-labs/agent-skills -g -y 2>/dev/null
+print_done "vercel-react-best-practices"
+
+print_installing "shadcn/ui Components (Official)"
+npx skills add shadcn-ui/skills -g -y 2>/dev/null
+print_done "shadcn-ui"
+
+print_installing "OWASP 2025 Security (120+ checks)"
+npx skills add agamm/claude-code-owasp -g -y 2>/dev/null
+print_done "owasp-2025"
+
+# -----------------------------------------
 # Done!
 # -----------------------------------------
 echo ""
@@ -94,8 +115,9 @@ echo -e "${BOLD}${GREEN}|        Base toolkit ready!                      |${RES
 echo -e "${BOLD}${GREEN}+================================================+${RESET}"
 echo ""
 echo -e "  ${BOLD}What was installed:${RESET}"
-echo -e "  ncode-saas-toolkit (5 skills + 4 agents)"
+echo -e "  ncode-saas-toolkit (7 skills + 4 agents)"
 echo -e "  superpowers, context7, typescript-lsp, frontend-design"
+echo -e "  supabase-official, react-best-practices, shadcn-ui, owasp-2025"
 echo ""
 echo -e "  ${BOLD}Next: Install your track${RESET}"
 echo -e "  ${CYAN}Web:${RESET}    curl -fsSL https://danielthegoldman.com/ncode-saas-toolkit-web/install.sh | bash"
