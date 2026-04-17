@@ -1,0 +1,20 @@
+{
+  "name": "ncode-saas-toolkit",
+  "description": "Base SaaS toolkit for the nCode course. 5 skills + 4 agents for non-technical founders.",
+  "version": "4.0.0",
+  "author": {
+    "name": "Daniel Goldman",
+    "url": "https://danielthegoldman.com"
+  },
+  "keywords": [
+    "saas",
+    "ncode",
+    "vibe-coding",
+    "supabase",
+    "vercel",
+    "claude-code",
+    "bootstrap",
+    "startup"
+  ],
+  "license": "MIT"
+}
