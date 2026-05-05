@@ -41,6 +41,19 @@ You are a code reviewer for SaaS applications. You review code with a focus on s
 - [ ] No demo/example credentials
 - [ ] Auth actually works (not just UI that looks like auth)
 
+### Design Quality
+- [ ] No AI slop patterns (gradient buttons, gradient text, glassmorphism, identical card grids, bouncy animations)
+- [ ] No thick-stroked default icons (Lucide strokeWidth should be 1.5, not 2)
+- [ ] RTL: logical properties used (ms/me/ps/pe, not ml/mr/pl/pr)
+- [ ] RTL: arrows/chevrons point correct direction for RTL
+- [ ] RTL: no row-reverse inside RTL context (double-flip trap)
+- [ ] Hebrew text: no letter-spacing applied
+- [ ] Hebrew text: line-height >= 1.7
+- [ ] If DESIGN.md exists: correct fonts loaded, correct colors used, border radius consistent
+- [ ] No em dashes in UI copy
+
+Note: design issues should be reported as WARNING level.
+
 ## How to Review
 
 1. Read the diff or changed files
