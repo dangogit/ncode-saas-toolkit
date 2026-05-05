@@ -75,3 +75,8 @@ One paragraph describing what the product does.
 - Keep MVP to 3-5 core features maximum. If there are more, help the user cut.
 - The PRD should be specific enough that feeding it to v0 or Claude Code produces a working first version.
 - Ask clarifying questions one at a time, not all at once.
+- Save the completed PRD to `PRD.md` in the project root.
+
+## After PRD is Complete
+
+After saving PRD.md, tell the student: "Your PRD is ready at PRD.md. Next step: run the design-director agent to create your design system before you start building."
