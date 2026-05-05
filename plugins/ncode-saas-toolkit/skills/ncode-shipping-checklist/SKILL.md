@@ -45,6 +45,16 @@ Before deploying to production, verify EVERY item. Block the deploy if critical 
 - [ ] No console.log in production code
 - [ ] Lighthouse score > 80 on Performance + SEO
 
+### Design Quality
+- [ ] RTL: all layouts use logical properties (ms/me/ps/pe, not ml/mr)
+- [ ] RTL: arrows/chevrons point correct direction
+- [ ] RTL: no `row-reverse` in RTL context
+- [ ] Hebrew text: no letter-spacing applied
+- [ ] Hebrew text: line-height >= 1.7
+- [ ] No AI slop patterns (gradients, glassmorphism, identical card grids, bouncy animations)
+- [ ] DESIGN.md exists and is followed consistently across screens
+- [ ] Touch targets >= 44x44px on interactive elements
+
 ## Mobile (Expo + Firebase)
 
 ### Security (CRITICAL)
@@ -72,6 +82,14 @@ Before deploying to production, verify EVERY item. Block the deploy if critical 
 - [ ] Sentry configured for React Native
 - [ ] PostHog tracking
 - [ ] Crash-free sessions alert set
+
+### Design Quality
+- [ ] RTL: I18nManager.forceRTL(true) is set
+- [ ] RTL: layout direction correct on all screens
+- [ ] Safe area insets respected (top and bottom)
+- [ ] No AI slop patterns
+- [ ] DESIGN.md followed consistently across screens
+- [ ] Touch targets >= 44x44px
 
 ## How to Run This Check
 
