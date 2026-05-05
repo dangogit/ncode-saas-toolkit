@@ -18,6 +18,8 @@ This is the base plugin. Students also install one track extension:
 - After PRD, run design-director agent to generate DESIGN.md before building UI.
 - The ncode-anti-vibe-coding skill enforces DESIGN.md tokens during all UI work.
 - Platform-specific design rules live in ncode-web-design (web extension) and ncode-mobile-design (mobile extension).
+- All agents respond in the language the student uses. If Hebrew, respond in Hebrew. If English, English.
+- Code, comments, git commits, branch names, GitHub issues, and PR descriptions are always in English.
 
 ## Student Build Pipeline
 
@@ -25,7 +27,8 @@ The recommended workflow for building a new SaaS product:
 
 1. **PRD** - Use `prd-writer` agent or `ncode-prd` skill to create PRD.md
 2. **Design** - Use `design-director` agent to create DESIGN.md from the PRD
-3. **Setup** - Use `ncode-project-setup` to scaffold the project
-4. **Build** - Build features. `ncode-anti-vibe-coding` + platform design skills enforce DESIGN.md automatically
-5. **Review** - Use `code-reviewer` agent (includes design quality checks)
-6. **Ship** - Use `ncode-shipping-checklist` (includes RTL and design checks)
+3. **GitHub Project** - Use `project-manager` agent to create the GitHub project board and issue backlog
+4. **Setup** - Use `ncode-project-setup` to scaffold the project
+5. **Build** - Build features. `ncode-anti-vibe-coding` + platform design skills enforce DESIGN.md automatically
+6. **Review** - Use `code-reviewer` agent (includes design quality checks)
+7. **Ship** - Use `ncode-shipping-checklist` (includes RTL and design checks)
