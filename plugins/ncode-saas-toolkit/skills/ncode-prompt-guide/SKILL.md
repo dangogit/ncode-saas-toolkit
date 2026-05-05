@@ -73,8 +73,13 @@ Activate this skill when:
 ```
 
 ### Improving design:
+
+If no DESIGN.md exists in the project, suggest running the design-director agent first to establish a design system.
+
 ```
 תשתמש ב-ncode-anti-vibe-coding skill.
+
+עקוב אחר DESIGN.md שלי לצבעים, פונטים וסגנון קומפוננטות. החל את חוקי ncode-anti-vibe-coding.
 
 תסתכל על [דף/מסך ספציפי] ותשפר את העיצוב:
 - האם זה נראה כמו vibe coding?
