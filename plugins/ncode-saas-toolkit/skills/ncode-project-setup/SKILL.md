@@ -15,6 +15,9 @@ npx create-next-app@latest [project-name] --app --typescript --tailwind --eslint
 
 Then install in order:
 1. `npx shadcn@latest init` - choose New York style, neutral colors
+
+Note: shadcn default colors and radius are fine for now. They will be customized by DESIGN.md later when you run the design-director agent.
+
 2. `npm install @supabase/ssr @supabase/supabase-js` - Supabase client
 3. `npm install ai @ai-sdk/google` - Vercel AI SDK + Gemini
 4. `npm install posthog-js` - Analytics
@@ -45,6 +48,7 @@ Then install:
 - Create `.env.example` with ALL required env vars as placeholders
 - `git init` + first commit: "feat: initial project setup with nCode Golden Stack"
 - Create `CLAUDE.md` with project-specific conventions
+- Suggest: "Want to set up your design system? Run the design-director agent to create a DESIGN.md for your project."
 
 ## Do NOT
 
