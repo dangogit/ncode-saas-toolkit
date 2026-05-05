@@ -102,14 +102,55 @@ Generate DESIGN.md with exactly this structure:
 - Never pick a purple/blue gradient palette - it is the most copied SaaS look
 - Never use pure black (#000000) or pure white (#ffffff) for backgrounds or text - tint neutrals toward the brand hue
 
-### Hebrew Fonts - approved list only
-You MUST pick Hebrew fonts that support Hebrew glyphs. Only choose from:
-- Heebo, Assistant, Rubik, Noto Sans Hebrew, Varela Round, Open Sans Hebrew, Secular One, Alef, Suez One, Frank Ruhl Libre, Karantina, Amatic SC (Hebrew subset only), Bellefair
+### Hebrew Fonts - approved list with personality guide
+You MUST pick Hebrew fonts that support Hebrew glyphs. Choose based on product personality:
 
-These are the only fonts with verified Hebrew support. Do not pick any Hebrew font outside this list.
+**Bold / Confident / Headlines:**
+- Secular One - rounded, strong, great for big numbers and titles
+- Suez One - editorial, premium, serif-like authority
+- Karantina - dramatic, attention-grabbing, for playful or bold brands
+- Frank Ruhl Libre - rooted in Israeli print culture, trustworthy, traditional
+
+**Clean / Modern / Body text:**
+- Heebo - versatile workhorse, excellent number rendering
+- Assistant - light and airy, very legible at small sizes
+- Rubik - geometric, modern, slightly rounded
+- Varela Round - friendly, approachable, soft
+
+**Character / Specialty:**
+- Alef - distinctive, great for financial/data displays
+- Bellefair - elegant serif, premium feel
+- Amatic SC (Hebrew subset) - handwritten, casual, young
+- Noto Sans Hebrew - neutral fallback, never use as primary choice
+- Open Sans Hebrew - safe but boring, use only as body fallback
+
+**Font pairing rules:**
+- NEVER pair two fonts from the same personality group (two bold fonts compete)
+- NEVER default to Frank Ruhl Libre + Heebo or Rubik + Assistant just because they are safe. Those are the "AI default" pairings. Be more creative.
+- Pick ONE display font that carries the brand personality + ONE clean body font for readability
+- If the product is playful: Karantina or Varela Round for headlines
+- If the product is premium: Suez One or Bellefair for headlines
+- If the product is professional: Frank Ruhl Libre or Secular One for headlines
+- If the product is modern/tech: Rubik or Alef for headlines
+- Body font should always be highly legible: Heebo, Assistant, or Rubik (pick the one NOT used as headline)
+
+### Icons - what to recommend
+The icon library you recommend in DESIGN.md must produce thin, professional icons - not the thick generic defaults that scream "AI generated this":
+
+- **Best choice:** Lucide with strokeWidth set to 1.5 (not the default 2)
+- **Also good:** Phosphor Light weight, Remix Line
+- **For mobile (Expo):** Lucide via react-native-vector-icons, or Phosphor via phosphor-react-native
+- **NEVER recommend:** FontAwesome (too heavy), Material Icons filled (too chunky), Heroicons solid, Lucide at default strokeWidth 2
+- Icons should feel like a whisper, not a shout. If the icons are the first thing you notice on a screen, they are too heavy.
 
 ### Every project gets a unique design
 You compose the design from scratch based on the product's personality and users. You do not apply a template. A fintech tool for accountants and a kids' tutoring app should look nothing alike even if built on the same stack.
+
+**Uniqueness checklist (verify before outputting DESIGN.md):**
+- Is my heading font a surprising choice for this product category? (If you picked the obvious font, try again)
+- Is my color palette something you would NOT find on the first page of Dribbble for this category?
+- Does the "What This Design Is NOT" section specifically call out the cliche designs in this product's category?
+- Would a designer look at this and think "interesting choice" rather than "safe choice"?
 
 ### Questions - never ask these
 - Never ask what fonts the student prefers
