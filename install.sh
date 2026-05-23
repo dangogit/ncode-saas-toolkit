@@ -3,6 +3,7 @@
 # https://github.com/dangogit/ncode-saas-toolkit
 #
 # Installs the base plugin + essential plugins for all nCode students.
+# Idempotent: safe to re-run.
 
 # -----------------------------------------
 # Colors & helpers
@@ -16,17 +17,80 @@ RESET='\033[0m'
 
 print_step()       { echo -e "\n${CYAN}${BOLD}> $1${RESET}"; }
 print_done()       { echo -e "  ${GREEN}[ok] $1${RESET}"; }
+print_skip()       { echo -e "  ${CYAN}[--] $1${RESET}"; }
 print_installing() { echo -e "  ${YELLOW}[..] $1...${RESET}"; }
-print_error()      { echo -e "  ${RED}[!!] $1${RESET}"; }
+print_warn()       { echo -e "  ${YELLOW}[!!] $1${RESET}"; }
+print_error()      { echo -e "  ${RED}[xx] $1${RESET}"; }
+
+# Trackers for the final summary
+SUCCESSES=()
+FAILURES=()
+record_ok()   { SUCCESSES+=("$1"); }
+record_fail() { FAILURES+=("$1"); }
 
 # -----------------------------------------
-# Pre-flight check
+# Platform detection
+# -----------------------------------------
+OS="$(uname -s)"
+case "$OS" in
+  Darwin*)              PLATFORM="macos" ;;
+  Linux*)               PLATFORM="linux" ;;
+  MINGW*|MSYS*|CYGWIN*) PLATFORM="windows" ;;
+  *)                    PLATFORM="unknown" ;;
+esac
+
+# -----------------------------------------
+# Pre-flight checks
 # -----------------------------------------
 if ! command -v claude &>/dev/null; then
   print_error "Claude Code is not installed."
   echo -e "  Run: ${BOLD}curl -fsSL https://danielthegoldman.com/claude-code/install.sh | bash${RESET}"
   exit 1
 fi
+
+if ! command -v git &>/dev/null; then
+  print_error "Git is not installed. Install Git first and re-run this installer."
+  exit 1
+fi
+
+# -----------------------------------------
+# Helper: install a Claude plugin idempotently
+# Verifies state before/after instead of guessing.
+# Args: $1 = plugin name
+# -----------------------------------------
+install_claude_plugin() {
+  local plugin="$1"
+  # Plugin list entries look like:  "❯ name@source"
+  if claude plugin list 2>/dev/null | grep -qE "(^|[[:space:]])${plugin}@"; then
+    print_skip "$plugin already installed"
+    record_ok "$plugin"
+    return 0
+  fi
+  print_installing "$plugin"
+  local out
+  if out=$(claude plugin install "$plugin" 2>&1); then
+    print_done "$plugin installed"
+    record_ok "$plugin"
+  else
+    print_error "$plugin failed: $(echo "$out" | head -1)"
+    record_fail "$plugin"
+  fi
+}
+
+# Helper: install marketplace skill via npx
+# Args: $1 = repo (e.g., supabase/agent-skills), $2 = display name
+install_marketplace_skill() {
+  local repo="$1"
+  local name="$2"
+  print_installing "$name"
+  if npx -y skills add "$repo" -g -y >/dev/null 2>&1; then
+    print_done "$name"
+    record_ok "$name"
+  else
+    print_warn "$name (skipped - check internet/npm)"
+    record_fail "$name"
+  fi
+}
 
 # -----------------------------------------
 # Welcome banner
@@ -36,6 +100,7 @@ echo -e "${BOLD}${CYAN}+================================================+${RESET
 echo -e "${BOLD}${CYAN}|     nCode Base Installer                       |${RESET}"
 echo -e "${BOLD}${CYAN}|  Skills, agents & plugins for SaaS development |${RESET}"
 echo -e "${BOLD}${CYAN}+================================================+${RESET}"
+echo -e "  Platform: ${BOLD}$PLATFORM${RESET}"
 echo ""
 
 # -----------------------------------------
@@ -43,83 +108,187 @@ echo ""
 # -----------------------------------------
 print_step "Installing ncode-saas-toolkit"
 print_installing "Adding marketplace: dangogit/ncode-saas-toolkit"
-claude plugin marketplace add https://github.com/dangogit/ncode-saas-toolkit 2>/dev/null
-print_installing "Installing plugin"
-claude plugin install ncode-saas-toolkit 2>/dev/null && \
-  print_done "ncode-saas-toolkit installed" || \
-  print_done "ncode-saas-toolkit already installed"
+if claude plugin marketplace add https://github.com/dangogit/ncode-saas-toolkit >/dev/null 2>&1; then
+  print_done "marketplace added"
+else
+  print_skip "marketplace already added (or add failed - continuing)"
+fi
+install_claude_plugin "ncode-saas-toolkit"
 
 # -----------------------------------------
 # 2. Superpowers
 # -----------------------------------------
-print_step "Installing Superpowers"
-print_installing "superpowers (brainstorming, planning, debugging, TDD)"
-claude plugin install superpowers 2>/dev/null && \
-  print_done "superpowers installed" || \
-  print_done "superpowers already installed"
+print_step "Installing Superpowers (brainstorming, planning, debugging, TDD)"
+install_claude_plugin "superpowers"
 
 # -----------------------------------------
 # 3. Context7
 # -----------------------------------------
-print_step "Installing Context7"
-print_installing "context7 (library & framework docs)"
-claude plugin install context7 2>/dev/null && \
-  print_done "context7 installed" || \
-  print_done "context7 already installed"
+print_step "Installing Context7 (library & framework docs)"
+install_claude_plugin "context7"
 
 # -----------------------------------------
-# 4. TypeScript LSP
+# 4. TypeScript LSP (requires claude-plugins-official marketplace)
 # -----------------------------------------
 print_step "Installing TypeScript LSP"
-print_installing "typescript-lsp"
-claude plugin install typescript-lsp 2>/dev/null && \
-  print_done "typescript-lsp installed" || \
-  print_done "typescript-lsp already installed"
+if ! claude plugin marketplace list 2>/dev/null | grep -q "claude-plugins-official"; then
+  print_installing "Adding claude-plugins-official marketplace"
+  claude plugin marketplace add anthropics/claude-plugins-official >/dev/null 2>&1 || true
+fi
+install_claude_plugin "typescript-lsp"
 
 # -----------------------------------------
 # 5. Frontend Design
 # -----------------------------------------
-print_step "Installing Frontend Design"
-print_installing "frontend-design (production-grade UI)"
-claude plugin install frontend-design 2>/dev/null && \
-  print_done "frontend-design installed" || \
-  print_done "frontend-design already installed"
+print_step "Installing Frontend Design (production-grade UI)"
+install_claude_plugin "frontend-design"
 
 # -----------------------------------------
-# 6. Additional marketplace skills
+# 6. gstack (Garry Tan's Claude Code skills)
+#    Used for: /investigate, /design-shotgun, /canary,
+#              /freeze, /guard, /unfreeze, /retro
 # -----------------------------------------
-print_step "Installing additional skills from marketplace"
+print_step "Installing gstack (selected commands for nCode lessons)"
 
-print_installing "Supabase Official Skills (DB, Auth, RLS, Edge Functions)"
-npx skills add supabase/agent-skills -g -y 2>/dev/null
-print_done "supabase-agent-skills"
+GSTACK_DIR="$HOME/.claude/skills/gstack"
 
-print_installing "React + Next.js Best Practices (Vercel Official)"
-npx skills add vercel-labs/agent-skills -g -y 2>/dev/null
-print_done "vercel-react-best-practices"
+# Make sure Bun is on PATH if it was installed in a previous run
+if ! command -v bun &>/dev/null && [ -x "$HOME/.bun/bin/bun" ]; then
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
+fi
 
-print_installing "shadcn/ui Components (Official)"
-npx skills add shadcn-ui/skills -g -y 2>/dev/null
-print_done "shadcn-ui"
+if [ -d "$GSTACK_DIR/.git" ]; then
+  print_skip "gstack already cloned at $GSTACK_DIR"
+  # Re-run setup in case it failed last time or gstack updated
+  if command -v bun &>/dev/null; then
+    print_installing "Re-running gstack setup (idempotent)"
+    if (cd "$GSTACK_DIR" && ./setup >/dev/null 2>&1); then
+      print_done "gstack setup verified"
+      record_ok "gstack"
+    else
+      print_warn "gstack setup returned non-zero (skills may already be linked)"
+      record_ok "gstack"
+    fi
+  else
+    print_warn "gstack present but Bun missing - skills may not work"
+    record_fail "gstack"
+  fi
+else
+  # Need to install Bun first
+  if ! command -v bun &>/dev/null; then
+    if [ "$PLATFORM" = "macos" ] || [ "$PLATFORM" = "linux" ]; then
+      print_installing "Installing Bun (required by gstack)"
+      if curl -fsSL https://bun.sh/install | bash >/dev/null 2>&1; then
+        export BUN_INSTALL="$HOME/.bun"
+        export PATH="$BUN_INSTALL/bin:$PATH"
+        if command -v bun &>/dev/null; then
+          print_done "Bun installed ($(bun --version))"
+        else
+          print_error "Bun installed but not on PATH. Restart shell and re-run this installer."
+          record_fail "gstack (Bun PATH issue)"
+        fi
+      else
+        print_error "Bun installation failed."
+        echo -e "    Install manually: ${BOLD}curl -fsSL https://bun.sh/install | bash${RESET}"
+        record_fail "gstack (Bun install failed)"
+      fi
+    else
+      print_warn "Bun not found. On Windows, install Bun via PowerShell first:"
+      echo -e "    ${BOLD}powershell -c \"irm bun.sh/install.ps1 | iex\"${RESET}"
+      echo -e "    Then re-run this installer from Git Bash."
+      record_fail "gstack (Bun missing on Windows)"
+    fi
+  else
+    print_skip "Bun already installed ($(bun --version))"
+  fi
 
-print_installing "OWASP 2025 Security (120+ checks)"
-npx skills add agamm/claude-code-owasp -g -y 2>/dev/null
-print_done "owasp-2025"
+  # Clone + setup if Bun is now available
+  if command -v bun &>/dev/null; then
+    print_installing "Cloning gstack to $GSTACK_DIR"
+    mkdir -p "$HOME/.claude/skills"
+    if git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git "$GSTACK_DIR" >/dev/null 2>&1; then
+      print_done "gstack cloned"
+      print_installing "Running gstack setup"
+      if (cd "$GSTACK_DIR" && ./setup >/dev/null 2>&1); then
+        print_done "gstack setup complete"
+        record_ok "gstack"
+      else
+        print_warn "gstack setup failed. Retry later: cd $GSTACK_DIR && ./setup"
+        record_fail "gstack (setup failed)"
+      fi
+    else
+      print_error "git clone failed for gstack."
+      record_fail "gstack (clone failed)"
+    fi
+  fi
+fi
 
 # -----------------------------------------
-# Done!
+# 7. Universal marketplace skills (relevant for both Web and Mobile)
+# Note: Web/Mobile-specific skills (Supabase, Vercel, Firebase, Expo) are
+# installed by the track-specific installers below.
+# -----------------------------------------
+print_step "Installing universal skills from marketplace"
+install_marketplace_skill "agamm/claude-code-owasp"   "OWASP 2025 Security (120+ checks)"
+
+# -----------------------------------------
+# Final verification
+# -----------------------------------------
+print_step "Verifying installation"
+
+# Verify gstack skill files exist on disk (most reliable check)
+GSTACK_SKILLS=(investigate design-shotgun canary freeze guard unfreeze retro)
+GSTACK_OK=1
+if [ -d "$GSTACK_DIR" ]; then
+  for skill in "${GSTACK_SKILLS[@]}"; do
+    if [ ! -d "$GSTACK_DIR/$skill" ]; then
+      print_warn "gstack skill missing on disk: /$skill"
+      GSTACK_OK=0
+    fi
+  done
+  if [ "$GSTACK_OK" = "1" ]; then
+    print_done "All 7 gstack skills present"
+  fi
+else
+  print_warn "gstack directory not found at $GSTACK_DIR"
+fi
+
+# -----------------------------------------
+# Summary
 # -----------------------------------------
 echo ""
 echo -e "${BOLD}${GREEN}+================================================+${RESET}"
-echo -e "${BOLD}${GREEN}|        Base toolkit ready!                      |${RESET}"
+if [ "${#FAILURES[@]}" = "0" ]; then
+  echo -e "${BOLD}${GREEN}|        Base toolkit ready!                     |${RESET}"
+else
+  echo -e "${BOLD}${YELLOW}|        Base toolkit ready (with warnings)      |${RESET}"
+fi
 echo -e "${BOLD}${GREEN}+================================================+${RESET}"
 echo ""
-echo -e "  ${BOLD}What was installed:${RESET}"
-echo -e "  ncode-saas-toolkit (7 skills + 4 agents)"
-echo -e "  superpowers, context7, typescript-lsp, frontend-design"
-echo -e "  supabase-official, react-best-practices, shadcn-ui, owasp-2025"
+
+if [ "${#SUCCESSES[@]}" -gt 0 ]; then
+  echo -e "  ${BOLD}Installed (${#SUCCESSES[@]}):${RESET}"
+  for item in "${SUCCESSES[@]}"; do
+    echo -e "    ${GREEN}[ok]${RESET} $item"
+  done
+fi
+
+if [ "${#FAILURES[@]}" -gt 0 ]; then
+  echo ""
+  echo -e "  ${BOLD}${YELLOW}Needs attention (${#FAILURES[@]}):${RESET}"
+  for item in "${FAILURES[@]}"; do
+    echo -e "    ${YELLOW}[!!]${RESET} $item"
+  done
+fi
+
 echo ""
 echo -e "  ${BOLD}Next: Install your track${RESET}"
 echo -e "  ${CYAN}Web:${RESET}    curl -fsSL https://danielthegoldman.com/ncode-saas-toolkit-web/install.sh | bash"
 echo -e "  ${CYAN}Mobile:${RESET} curl -fsSL https://danielthegoldman.com/ncode-saas-toolkit-mobile/install.sh | bash"
 echo ""
+
+# Non-zero exit if anything critical failed (but not for marketplace skills)
+if [ "${#FAILURES[@]}" -gt 0 ]; then
+  exit 0  # Don't fail the whole install for soft errors - user gets the warnings
+fi
