@@ -92,6 +92,23 @@ install_marketplace_skill() {
   fi
 }
 
+# Helper: add a Claude plugin marketplace idempotently.
+# Args: $1 = marketplace ref (URL or owner/repo), $2 = marketplace id (as shown in `claude plugin marketplace list`)
+add_claude_marketplace() {
+  local mp_ref="$1"
+  local mp_id="$2"
+  if claude plugin marketplace list 2>/dev/null | grep -q "$mp_id"; then
+    print_skip "marketplace $mp_id already added"
+    return 0
+  fi
+  print_installing "marketplace $mp_id"
+  if claude plugin marketplace add "$mp_ref" >/dev/null 2>&1; then
+    print_done "marketplace $mp_id added"
+  else
+    print_warn "marketplace $mp_id add failed - plugin installs may fail"
+  fi
+}
+
 # -----------------------------------------
 # Welcome banner
 # -----------------------------------------
@@ -104,47 +121,38 @@ echo -e "  Platform: ${BOLD}$PLATFORM${RESET}"
 echo ""
 
 # -----------------------------------------
-# 1. ncode-saas-toolkit marketplace + plugin
+# 1. Add all required marketplaces UP FRONT.
+#    `claude plugin install <name>` fails with "plugin not found" if its
+#    marketplace isn't registered yet, so they all have to be added before any
+#    plugin install runs. The previous version added marketplaces lazily, which
+#    meant `superpowers` (missing marketplace) and `context7` (marketplace added
+#    after install) failed on fresh machines.
 # -----------------------------------------
-print_step "Installing ncode-saas-toolkit"
-print_installing "Adding marketplace: dangogit/ncode-saas-toolkit"
-if claude plugin marketplace add https://github.com/dangogit/ncode-saas-toolkit >/dev/null 2>&1; then
-  print_done "marketplace added"
-else
-  print_skip "marketplace already added (or add failed - continuing)"
-fi
-install_claude_plugin "ncode-saas-toolkit"
+print_step "Adding plugin marketplaces"
+add_claude_marketplace "https://github.com/dangogit/ncode-saas-toolkit" "ncode-saas-toolkit"
+add_claude_marketplace "anthropics/claude-plugins-official"             "claude-plugins-official"
+add_claude_marketplace "obra/superpowers-marketplace"                   "superpowers-marketplace"
 
 # -----------------------------------------
-# 2. Superpowers
+# 2. Install plugins (marketplaces are now all present)
 # -----------------------------------------
+print_step "Installing ncode-saas-toolkit"
+install_claude_plugin "ncode-saas-toolkit"
+
 print_step "Installing Superpowers (brainstorming, planning, debugging, TDD)"
 install_claude_plugin "superpowers"
 
-# -----------------------------------------
-# 3. Context7
-# -----------------------------------------
 print_step "Installing Context7 (library & framework docs)"
 install_claude_plugin "context7"
 
-# -----------------------------------------
-# 4. TypeScript LSP (requires claude-plugins-official marketplace)
-# -----------------------------------------
 print_step "Installing TypeScript LSP"
-if ! claude plugin marketplace list 2>/dev/null | grep -q "claude-plugins-official"; then
-  print_installing "Adding claude-plugins-official marketplace"
-  claude plugin marketplace add anthropics/claude-plugins-official >/dev/null 2>&1 || true
-fi
 install_claude_plugin "typescript-lsp"
 
-# -----------------------------------------
-# 5. Frontend Design
-# -----------------------------------------
 print_step "Installing Frontend Design (production-grade UI)"
 install_claude_plugin "frontend-design"
 
 # -----------------------------------------
-# 6. gstack (Garry Tan's Claude Code skills)
+# 3. gstack (Garry Tan's Claude Code skills)
 #    Used for: /investigate, /design-shotgun, /canary,
 #              /freeze, /guard, /unfreeze, /retro
 # -----------------------------------------
@@ -225,7 +233,7 @@ else
 fi
 
 # -----------------------------------------
-# 7. Universal marketplace skills (relevant for both Web and Mobile)
+# 4. Universal marketplace skills (relevant for both Web and Mobile)
 # Note: Web/Mobile-specific skills (Supabase, Vercel, Firebase, Expo) are
 # installed by the track-specific installers below.
 # -----------------------------------------
