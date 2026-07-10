@@ -18,10 +18,26 @@ claude plugin add dangogit/ncode-saas-toolkit
 - `claude-code-intro` - Claude Code fundamentals and memory
 
 ### Agents
-- `saas-mentor` - Business advice (pricing, positioning, growth)
+
+**Build pipeline:**
+- `saas-mentor` - Business advice + course navigation, routes to specialists
 - `prd-writer` - Generate PRDs from idea descriptions
+- `design-director` - Generate DESIGN.md design system from the PRD
+- `project-manager` - GitHub project board, issues, branches, PRs
 - `code-reviewer` - Review code before shipping
 - `qa-tester` - Test features and find edge cases
+
+**GTM pipeline (idea to 1000 paying users):**
+- `idea-scout` - Find and score SaaS ideas matched to your skills and niche access
+- `validation-coach` - Validate before building: Mom Test interviews, smoke tests, pre-sales
+- `competitor-analyst` - Map the landscape, tear down competitor pricing, find your wedge
+- `pricing-strategist` - Value-based tiers, trial vs freemium, Polar/RevenueCat setup
+- `landing-copywriter` - Landing page copy that converts (Hebrew or English)
+- `launch-commander` - Launch-week plan: Product Hunt, Israeli + global communities
+- `content-engine` - SEO + social content system, calendar, repurposing pipeline
+- `outbound-closer` - First 10-100 paying customers: ICP lists, cold outreach, demos, closing
+- `funnel-analyst` - PostHog instrumentation, activation metric, weekly metrics ritual
+- `retention-builder` - Onboarding, churn saves, referrals, the 100-to-1000 playbook
 
 ## MCP Servers (installed by nCode installer)
 

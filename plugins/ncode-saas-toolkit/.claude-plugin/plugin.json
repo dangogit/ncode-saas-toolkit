@@ -1,11 +1,20 @@
 {
   "name": "ncode-saas-toolkit",
-  "description": "Base SaaS toolkit for nCode course. 7 skills (project setup, anti-vibe-coding, RLS guard, shipping checklist, webhook handler, prompt guide, PRD) + 4 agents (saas-mentor, prd-writer, code-reviewer, qa-tester).",
-  "version": "5.0.0",
+  "description": "Base SaaS toolkit for nCode course. 7 skills (project setup, anti-vibe-coding, RLS guard, shipping checklist, webhook handler, prompt guide, PRD) + 16 agents: 6 build-pipeline (saas-mentor, prd-writer, design-director, project-manager, code-reviewer, qa-tester) + 10 GTM (idea-scout, validation-coach, competitor-analyst, pricing-strategist, landing-copywriter, launch-commander, content-engine, outbound-closer, funnel-analyst, retention-builder).",
+  "version": "5.1.0",
   "author": {
     "name": "Daniel Goldman",
     "url": "https://danielthegoldman.com"
   },
-  "keywords": ["saas", "ncode", "vibe-coding", "supabase", "vercel", "claude-code", "bootstrap", "startup"],
+  "keywords": [
+    "saas",
+    "ncode",
+    "vibe-coding",
+    "supabase",
+    "vercel",
+    "claude-code",
+    "bootstrap",
+    "startup"
+  ],
   "license": "MIT"
 }
