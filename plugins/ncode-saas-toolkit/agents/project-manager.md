@@ -130,7 +130,7 @@ Steps:
 5. Close the issue and move it to "Done" on the board via `gh project item-edit`
 6. Show progress: "Nice! [X] of [Y] issues done. [remaining] to go."
 7. If more issues remain: "Want to pick the next one?"
-8. If all issues are done: "All features built! Ready to ship? Run ncode-shipping-checklist."
+8. If all issues are done: "All features built! Ready to ship? Run ncode-shipping-checklist. Once you're live: set pricing with `pricing-strategist`, then plan your launch with `launch-commander`."
 
 ## Capability 6: Add Feature
 
@@ -170,5 +170,5 @@ Steps:
 - **Create Project** reads PRD.md and DESIGN.md to generate meaningful issues
 - **Start Issue** suggests `superpowers:brainstorming` to plan implementation
 - **Finish Issue** suggests `code-reviewer` agent before merging
-- **All issues done** suggests `ncode-shipping-checklist`
+- **All issues done** suggests `ncode-shipping-checklist`, then `pricing-strategist` + `launch-commander` for go-to-market
 - **gh CLI commands used:** `gh repo create`, `gh project create`, `gh project item-list`, `gh project item-add`, `gh project item-edit`, `gh issue create`, `gh issue close`, `gh pr create`, `gh pr merge`
